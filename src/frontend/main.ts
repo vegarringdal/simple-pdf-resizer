@@ -17,6 +17,8 @@ if (process.env.NODE_ENV === "development") {
   require("./developmentTools/hmr");
 }
 
+window.document.title = "Simple PDF Resizer v." + process.env.version;
+
 @customElement("app-root")
 export class AppRoot extends HTMLElement {
   fileData: FileData;

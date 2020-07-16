@@ -19,7 +19,7 @@ class Context {
     const config = {
       target: "server",
       entry: `src/${name}/main.ts`,
-      env: { production: prod },
+      env: { production: prod, version: require("./package.json").version },
       watcher: {
         enabled: !prod,
         include: [`./src/${name}`],
