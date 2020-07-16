@@ -17,7 +17,16 @@ ipcMain.handle("openFile", async () => {
 
     if (file?.length) {
       const filedata = await getPDFData(file[0]);
-      getWindow().webContents.send("openFile", filedata);
+      if ((filedata as any)?.isEncrypted) {
+        dialog.showErrorBox(
+          "read error",
+          "file is encrypted, this is not supported at the moment"
+        );
+        // return nothing
+        getWindow().webContents.send("openFile");
+      } else {
+        getWindow().webContents.send("openFile", filedata);
+      }
     } else {
       getWindow().webContents.send("openFile");
     }
