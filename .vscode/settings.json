@@ -1,0 +1,7 @@
+{
+    "html.format.wrapAttributes": "force-aligned",
+    "editor.tabSize": 4,
+    "editor.wordWrap": "off",
+    "javascript.preferences.importModuleSpecifier": "relative",
+    "typescript.preferences.importModuleSpecifier": "relative"
+}

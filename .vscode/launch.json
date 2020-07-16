@@ -1,0 +1,17 @@
+  
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+          // node --inspect-brk ./dist/backend/_server_entry.js, need fusebox to include --inspect-brk
+          "name": "Debug dev server",
+          "type": "node",
+          "request": "attach",
+          "stopOnEntry": false,
+          "port": 9229,
+          "restart": true, 
+          "smartStep": true,
+          "sourceMaps": true
+      }
+  ]
+}
