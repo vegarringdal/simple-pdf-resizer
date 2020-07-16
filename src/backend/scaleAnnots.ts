@@ -175,7 +175,7 @@ export function scaleAnnots(page: PDFPage, x: number, y: number) {
       const matches = pdfNameRCfontsize.value.match(
         /font-size:[0-9]*?.?[0-9]*?pt/g
       );
-      console.log(matches);
+
       if (matches?.length) {
         const fontsizes: string[] = [];
 
