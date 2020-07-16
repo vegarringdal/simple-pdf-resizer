@@ -37,6 +37,7 @@
         }
       ],
       "packagerConfig": {
+        "asar": true,
         "ignore": [
           "^(/src$)",
           "^(/.vscode$)",
