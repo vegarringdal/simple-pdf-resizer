@@ -102,16 +102,16 @@ export class AppRoot extends HTMLElement {
         ${!state.updateAvailable
           ? ""
           : html`<!-- template -->
-              <div class="flex p-2 italic text-xs tems-center bg-orange-200">
+              <div class="flex p-2   items-center bg-orange-400">
                 <button
-                  class="ml-3 underline flex-1"
+                  class="ml-3 font-semibold flex-1"
                   @click=${() => {
                     (window as PreloadAPI).preload.gotoUrl(
                       "https://github.com/vegarringdal/simple-pdf-resizer/releases"
                     );
                   }}
                 >
-                  Update available, click here.
+                  Update available - click here
                 </button>
               </div> `}
       </div> `;
