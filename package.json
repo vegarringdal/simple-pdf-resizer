@@ -7,7 +7,7 @@
     "test": "node typecheck && npm run eslint",
     "make": "npm run build &&  electron-forge make",
     "try": "electron ./dist/backend/main",
-    "postinstall_disabled": "./node_modules/.bin/electron-rebuild.cmd install-app-deps",
+    "postinstall": "./node_modules/.bin/electron-rebuild.cmd install-app-deps",
     "start": "node fuse",
     "build": "node fuse dist",
     "eslint": "npm run eslint:run:backend && npm run eslint:run:frontend && npm run eslint:run:preload",
