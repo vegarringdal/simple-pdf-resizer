@@ -1,7 +1,9 @@
+if (process.env.NODE_ENV === "development") {
+  require("./developmentTools/hmr");
+}
 import "./index.css";
 import { customElement } from "@simple-html/core";
 import { html } from "lit-html";
-import { FileData } from "../backend/fileData";
 import {
   detailListCheckbox,
   showA4Checkbox,
@@ -12,35 +14,24 @@ import { simplelList } from "./simplelList";
 import { actionButtons } from "./actionButtons";
 import { loading } from "./loading";
 import { PreloadAPI } from "../preload/main";
-
-if (process.env.NODE_ENV === "development") {
-  require("./developmentTools/hmr");
-}
+import { connectViewState, viewState } from "./viewState";
 
 window.document.title = "Simple PDF Resizer v." + process.env.version;
 
 @customElement("app-root")
 export class AppRoot extends HTMLElement {
-  fileData: FileData;
-  detailForm = false;
-  showA4 = true;
-  showA3 = true;
-  a4pages = 0;
-  a3pages = 0;
-  showLoadingScreen = false;
-  loadingMessage: string = " something awsome";
-  updateAvailable: boolean;
-
-  constructor() {
-    super();
+  connectedCallback() {
     this.checkVersion();
+    connectViewState(this, this.render);
   }
 
   render() {
+    const [state] = viewState();
+
     this.resetPageCount();
 
-    if (this.showLoadingScreen) {
-      return loading(this);
+    if (state.showLoadingScreen) {
+      return loading();
     }
 
     return html`<!-- template -->
@@ -49,38 +40,37 @@ export class AppRoot extends HTMLElement {
         ${actionButtons(this)}
 
         <!-- file path and pages info -->
-        ${this.fileData
+        ${state.fileData
           ? html`<div class="p-2 italic text-sm">
               <span class="underline"
-                >PDF path: (${this.fileData.pages.length} pages)</span
+                >PDF path: (${state.fileData.pages.length} pages)</span
               >
               <br />
-              ${this.fileData.filePath}<br />
+              ${state.fileData.filePath}<br />
             </div>`
           : ""}
 
         <!--  list of pages  -->
         <div
-          class="flex flex-grow flex-col overflow-y-auto  m-2 p-2 ${this
-            .fileData
+          class="flex flex-grow flex-col overflow-y-auto  m-2 p-2 ${state.fileData
             ? "border-t border-b bg-gray-100"
             : ""}"
         >
           <ol>
-            ${this.fileData?.pages?.map((page, index) => {
+            ${state.fileData?.pages?.map((page, index) => {
               let show = false;
               if (page.paperSize === "A3") {
-                show = this.showA3;
+                show = state.showA3;
               }
 
               if (page.paperSize === "A4") {
-                show = this.showA4;
+                show = state.showA4;
               }
               if (!show) {
                 return "";
               }
 
-              return this.detailForm
+              return state.detailForm
                 ? detailList(this, page, index)
                 : simplelList(this, page, index);
             })}
@@ -89,9 +79,9 @@ export class AppRoot extends HTMLElement {
 
         <!-- botton checkboxes -->
         <div class="flex flex-row">
-          ${this.fileData ? detailListCheckbox(this) : ""}
-          ${this.fileData ? showA4Checkbox(this) : ""}
-          ${this.fileData ? showA3Checkbox(this) : ""}
+          ${state.fileData ? detailListCheckbox() : ""}
+          ${state.fileData ? showA4Checkbox() : ""}
+          ${state.fileData ? showA3Checkbox() : ""}
         </div>
 
         <div class="flex p-2 italic text-xs tems-center bg-gray-200">
@@ -109,7 +99,7 @@ export class AppRoot extends HTMLElement {
             show license
           </button>
         </div>
-        ${!this.updateAvailable
+        ${!state.updateAvailable
           ? ""
           : html`<!-- template -->
               <div class="flex p-2 italic text-xs tems-center bg-orange-200">
@@ -128,13 +118,15 @@ export class AppRoot extends HTMLElement {
   }
 
   resetPageCount() {
-    this.a4pages = 0;
-    this.a3pages = 0;
-    this.fileData?.pages.forEach((p) => {
+    // set instance value, do not setViewState... that will bring us into a endless loop
+    const [state] = viewState();
+    state.a4pages = 0;
+    state.a3pages = 0;
+    state.fileData?.pages.forEach((p) => {
       if (p.paperSize === "A3") {
-        this.a3pages++;
+        state.a3pages++;
       } else {
-        this.a4pages++;
+        state.a4pages++;
       }
     });
   }
@@ -144,44 +136,50 @@ export class AppRoot extends HTMLElement {
   }
 
   setLoading(msg: string) {
-    this.showLoadingScreen = true;
-    this.loadingMessage = msg;
-    this.render();
+    const [state] = viewState();
+    state.showLoadingScreen = true;
+    state.loadingMessage = msg;
   }
 
   removeLoading() {
-    this.showLoadingScreen = false;
-    this.loadingMessage = "";
-    this.render();
+    const [state, setViewState] = viewState();
+    state.showLoadingScreen = false;
+    state.loadingMessage = "";
+    setViewState(Object.assign(state, state));
   }
 
   async selectFileBtn() {
+    const [state, setViewState] = viewState();
     this.setLoading(
       "open file selected - will resize when user have pressed save"
     );
 
-    this.fileData = await (window as PreloadAPI).preload.openFileDialog();
+    state.fileData = await (window as PreloadAPI).preload.openFileDialog();
+    setViewState(Object.assign(state, state));
     this.removeLoading();
   }
 
   async saveAsBtn() {
+    const [state] = viewState();
     this.setLoading(
       "save as selected - will resize when user have pressed save"
     );
 
-    await (window as PreloadAPI).preload.saveAsDialog(this.fileData);
+    await (window as PreloadAPI).preload.saveAsDialog(state.fileData);
     this.removeLoading();
   }
 
   async displaySelectedBtn() {
+    const [state] = viewState();
     this.setLoading("loading file in background");
 
-    await (window as PreloadAPI).preload.showSelectedBtn(this.fileData);
+    await (window as PreloadAPI).preload.showSelectedBtn(state.fileData);
     this.removeLoading();
   }
 
   async checkVersion() {
     try {
+      const [state, setViewState] = viewState();
       const response = await fetch(
         "https://api.github.com/repos/vegarringdal/simple-pdf-resizer/git/refs/tags"
       );
@@ -193,23 +191,22 @@ export class AppRoot extends HTMLElement {
           ""
         );
         if (currentVersion !== newestVersion) {
-          this.updateAvailable = true;
-          this.render();
+          state.updateAvailable = true;
+          setViewState(Object.assign(state, state));
         }
       }
-
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
   }
 
   async saveToDesktopBtn() {
+    const [state] = viewState();
     this.setLoading(
       "save as selected - will resize when user have pressed save"
     );
 
-    await (window as PreloadAPI).preload.saveToDesktopBtn(this.fileData);
+    await (window as PreloadAPI).preload.saveToDesktopBtn(state.fileData);
     this.removeLoading();
   }
 }

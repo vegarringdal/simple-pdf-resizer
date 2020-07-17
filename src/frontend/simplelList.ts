@@ -2,8 +2,10 @@ import { AppRoot } from "./main";
 import { PageData } from "../backend/pageData";
 import { html } from "lit-html";
 import { editScale } from "./editScale";
+import { viewState } from "./viewState";
 
 export function simplelList(ctx: AppRoot, page: PageData, index: number) {
+  const [state, setViewState] = viewState();
   return html`<!-- template -->
     <li class="flex flex-row ${index ? "mt-4" : ""} border-b">
       <h1 class="font-semibold mr-5 ">
@@ -24,7 +26,7 @@ export function simplelList(ctx: AppRoot, page: PageData, index: number) {
               .checked=${page.paperSize === "A4" ? true : false}
               @click=${() => {
                 editScale(page, "A4");
-                ctx.render();
+                setViewState(state);
               }}
           /></label>
           <label class="m-1 p-1 pr-1"
@@ -34,7 +36,7 @@ export function simplelList(ctx: AppRoot, page: PageData, index: number) {
               .checked=${page.paperSize === "A3" ? true : false}
               @click=${() => {
                 editScale(page, "A3");
-                ctx.render();
+                setViewState(state);
               }}
             />
           </label>

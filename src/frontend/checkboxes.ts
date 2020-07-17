@@ -1,46 +1,49 @@
-import { AppRoot } from "./main";
 import { html } from "lit-html";
+import { viewState } from "./viewState";
 
-export function detailListCheckbox(ctx: AppRoot) {
+export function detailListCheckbox() {
+  const [state, setViewState] = viewState();
   return html`<!-- template -->
     <label class="m-2 p-2 italic text-sm"
       >Show details:<input
         class="m-2 p-2"
         type="checkbox"
-        .checked=${ctx.detailForm}
+        .checked=${state.detailForm}
         @click=${() => {
-          ctx.detailForm = ctx.detailForm ? false : true;
-          ctx.render();
+          state.detailForm = state.detailForm ? false : true;
+          setViewState(state);
         }}
     /></label>`;
 }
 
-export function showA4Checkbox(ctx: AppRoot) {
+export function showA4Checkbox() {
+  const [state, setViewState] = viewState();
   return html`<!-- template -->
     <label class="m-2 p-2 italic text-sm"
       >Show A4:<input
         class="m-2 p-2"
         type="checkbox"
-        .checked=${ctx.showA4}
+        .checked=${state.showA4}
         @click=${() => {
-          ctx.showA4 = ctx.showA4 ? false : true;
-          ctx.render();
+          state.showA4 = state.showA4 ? false : true;
+          setViewState(state);
         }}
-      />(${ctx.a4pages})</label
+      />(${state.a4pages})</label
     >`;
 }
 
-export function showA3Checkbox(ctx: AppRoot) {
+export function showA3Checkbox() {
+  const [state, setViewState] = viewState();
   return html`<!-- template -->
     <label class="m-2 p-2 italic text-sm"
       >Show A3:<input
         class="m-2 p-2"
         type="checkbox"
-        .checked=${ctx.showA3}
+        .checked=${state.showA3}
         @click=${() => {
-          ctx.showA3 = ctx.showA3 ? false : true;
-          ctx.render();
+          state.showA3 = state.showA3 ? false : true;
+          setViewState(state);
         }}
-      />(${ctx.a3pages})</label
+      />(${state.a3pages})</label
     >`;
 }
