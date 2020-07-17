@@ -2,6 +2,9 @@
 
 Simple app that helps set pdf pages to A4 or A3 sizes.
 
+## Download
+* [goto releases](https://github.com/vegarringdal/simple-pdf-resizer/releases)
+* download zip file under assets 
 
 
 ## how run from source
