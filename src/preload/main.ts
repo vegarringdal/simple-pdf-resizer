@@ -37,7 +37,7 @@ const preloadAPI = {
       }
     });
   },
-  showLicense: function (url: string) {
+  gotoUrl: function (url: string) {
     require("electron").shell.openExternal(url);
   },
 };

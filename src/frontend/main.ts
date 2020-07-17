@@ -29,6 +29,12 @@ export class AppRoot extends HTMLElement {
   a3pages = 0;
   showLoadingScreen = false;
   loadingMessage: string = " something awsome";
+  updateAvailable: boolean;
+
+  constructor() {
+    super();
+    this.checkVersion();
+  }
 
   render() {
     this.resetPageCount();
@@ -95,7 +101,7 @@ export class AppRoot extends HTMLElement {
           <button
             class="ml-3 underline flex-1"
             @click=${() => {
-              (window as PreloadAPI).preload.showLicense(
+              (window as PreloadAPI).preload.gotoUrl(
                 "https://github.com/vegarringdal/simple-pdf-resizer/blob/master/LICENSE"
               );
             }}
@@ -103,6 +109,21 @@ export class AppRoot extends HTMLElement {
             show license
           </button>
         </div>
+        ${!this.updateAvailable
+          ? ""
+          : html`<!-- template -->
+              <div class="flex p-2 italic text-xs tems-center bg-orange-200">
+                <button
+                  class="ml-3 underline flex-1"
+                  @click=${() => {
+                    (window as PreloadAPI).preload.gotoUrl(
+                      "https://github.com/vegarringdal/simple-pdf-resizer/releases"
+                    );
+                  }}
+                >
+                  Update available, click here.
+                </button>
+              </div> `}
       </div> `;
   }
 
@@ -157,6 +178,30 @@ export class AppRoot extends HTMLElement {
 
     await (window as PreloadAPI).preload.showSelectedBtn(this.fileData);
     this.removeLoading();
+  }
+
+  async checkVersion() {
+    try {
+      const response = await fetch(
+        "https://api.github.com/repos/vegarringdal/simple-pdf-resizer/git/refs/tags"
+      );
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        const currentVersion = process.env.version;
+        const newestVersion = data[data.length - 1].ref.replace(
+          "refs/tags/",
+          ""
+        );
+        if (currentVersion !== newestVersion) {
+          this.updateAvailable = true;
+          this.render();
+        }
+      }
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async saveToDesktopBtn() {
