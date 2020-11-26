@@ -26,7 +26,7 @@ const preloadAPI = {
       ipcRenderer.invoke("saveToDesktop", filedata);
     });
   },
-  showSelectedBtn: function (filedata: FileData) {
+  showSelectedBtn: function (filedata: FileData): Promise<void> {
     return new Promise((resolve) => {
       try {
         require("electron").shell.openExternal(filedata.filePath);
