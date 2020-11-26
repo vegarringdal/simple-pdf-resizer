@@ -3,6 +3,7 @@ import { createWindow, getWindow } from "./createWindow";
 import { getPDFData } from "./getPDFData";
 import { readFileAndResize } from "./readFileAndResize";
 import { dialog } from "electron";
+if (require("electron-squirrel-startup")) app.quit();
 
 // win app is ready
 app.whenReady().then(createWindow);
