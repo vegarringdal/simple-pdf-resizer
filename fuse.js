@@ -99,7 +99,7 @@ async function runBuild(ctx, production) {
     }
 
     if (name === FRONTEND_PRELOAD_BUNDLE_NAME) {
-      mainServer?.electron.stop();
+      mainServer && mainServer.electron.stop();
     }
 
     if (mainServer) {
