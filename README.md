@@ -10,7 +10,7 @@ __Big thanks to creators of the libraries I use.__
 
 ## Download
 * [goto releases](https://github.com/vegarringdal/simple-pdf-resizer/releases)
-* download zip file under assets 
+* download zip or exe file under assets 
 
 
 ## How run from source
