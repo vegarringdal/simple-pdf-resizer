@@ -2,17 +2,23 @@
 
 Simple app that helps set pdf pages to A4 or A3 sizes.
 
+Will not work with encrypted PDF
+
+__Big thanks to creators of the libraries I use.__
+* See package.json under devDependencies & dependencies for libraries used.
+
+
 ## Download
 * [goto releases](https://github.com/vegarringdal/simple-pdf-resizer/releases)
 * download zip file under assets 
 
 
-## how run from source
+## How run from source
 * `git clone https://github.com/vegarringdal/simple-pdf-resizer`
 * `npm install`
 * `npm start`
 
-## how make new build
+## How make new build
 * `npm run make`
 * see out folder
 
