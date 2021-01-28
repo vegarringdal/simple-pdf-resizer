@@ -79,7 +79,7 @@
     "@typescript-eslint/parser": "^4.9.0",
     "autoprefixer": "^10.0.4",
     "custom-elements-hmr-polyfill": "^1.0.3",
-    "electron": "^11.0.3",
+    "electron": "^11.1.0",
     "electron-rebuild": "^2.3.4",
     "eslint": "^7.15.0",
     "eslint-config-prettier": "^6.15.0",
