@@ -42,6 +42,8 @@ const preloadAPI = {
   },
 };
 
+console.log("loaded");
+
 contextBridge.exposeInMainWorld("preload", preloadAPI);
 
 export type PreloadAPI = { preload: typeof preloadAPI } & typeof window;

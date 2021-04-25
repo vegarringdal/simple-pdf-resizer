@@ -1,4 +1,7 @@
-if (process.env.NODE_ENV === "development") {
+declare const DEVELOPMENT: boolean;
+declare const VERSION: string;
+
+if (DEVELOPMENT) {
   require("./developmentTools/hmr");
 }
 import "./index.css";
@@ -14,19 +17,19 @@ import { simplelList } from "./simplelList";
 import { actionButtons } from "./actionButtons";
 import { loading } from "./loading";
 import { PreloadAPI } from "../preload/main";
-import { connectViewState, viewState } from "./viewState";
+import { viewState } from "./viewState";
 
-window.document.title = "Simple PDF Resizer v." + process.env.version;
+window.document.title = "Simple PDF Resizer v." + VERSION;
 
 @customElement("app-root")
 export class AppRoot extends HTMLElement {
   connectedCallback() {
     this.checkVersion();
-    connectViewState(this, this.render);
+    viewState.connectStateChanges(this, this.render);
   }
 
   render() {
-    const [state] = viewState();
+    const [state] = viewState.getState();
 
     this.resetPageCount();
 
@@ -119,7 +122,7 @@ export class AppRoot extends HTMLElement {
 
   resetPageCount() {
     // set instance value, do not setViewState... that will bring us into a endless loop
-    const [state] = viewState();
+    const [state] = viewState.getState();
     state.a4pages = 0;
     state.a3pages = 0;
     state.fileData?.pages.forEach((p) => {
@@ -136,20 +139,20 @@ export class AppRoot extends HTMLElement {
   }
 
   setLoading(msg: string) {
-    const [state] = viewState();
+    const [state] = viewState.getState();
     state.showLoadingScreen = true;
     state.loadingMessage = msg;
   }
 
   removeLoading() {
-    const [state, setViewState] = viewState();
+    const [state, setViewState] = viewState.getState();
     state.showLoadingScreen = false;
     state.loadingMessage = "";
     setViewState(Object.assign(state, state));
   }
 
   async selectFileBtn() {
-    const [state, setViewState] = viewState();
+    const [state, setViewState] = viewState.getState();
     this.setLoading(
       "open file selected - will resize when user have pressed save"
     );
@@ -160,7 +163,7 @@ export class AppRoot extends HTMLElement {
   }
 
   async saveAsBtn() {
-    const [state] = viewState();
+    const [state] = viewState.getState();
     this.setLoading(
       "save as selected - will resize when user have pressed save"
     );
@@ -170,7 +173,7 @@ export class AppRoot extends HTMLElement {
   }
 
   async displaySelectedBtn() {
-    const [state] = viewState();
+    const [state] = viewState.getState();
     this.setLoading("loading file in background");
 
     await (window as PreloadAPI).preload.showSelectedBtn(state.fileData);
@@ -179,13 +182,13 @@ export class AppRoot extends HTMLElement {
 
   async checkVersion() {
     try {
-      const [state, setViewState] = viewState();
+      const [state, setViewState] = viewState.getState();
       const response = await fetch(
         "https://api.github.com/repos/vegarringdal/simple-pdf-resizer/git/refs/tags"
       );
       const data = await response.json();
       if (Array.isArray(data)) {
-        const currentVersion = process.env.version;
+        const currentVersion = VERSION;
         const newestVersion = data[data.length - 1].ref.replace(
           "refs/tags/",
           ""
@@ -201,7 +204,7 @@ export class AppRoot extends HTMLElement {
   }
 
   async saveToDesktopBtn() {
-    const [state] = viewState();
+    const [state] = viewState.getState();
     this.setLoading(
       "save as selected - will resize when user have pressed save"
     );

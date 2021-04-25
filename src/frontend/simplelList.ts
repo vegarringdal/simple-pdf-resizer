@@ -5,12 +5,10 @@ import { editScale } from "./editScale";
 import { viewState } from "./viewState";
 
 export function simplelList(ctx: AppRoot, page: PageData, index: number) {
-  const [state, setViewState] = viewState();
+  const [state, setViewState] = viewState.getState();
   return html`<!-- template -->
     <li class="flex flex-row ${index ? "mt-4" : ""} border-b">
-      <h1 class="font-semibold mr-5 ">
-        Page ${page.page}:
-      </h1>
+      <h1 class="font-semibold mr-5 ">Page ${page.page}:</h1>
       <div class="flex-1">
         <span class="italic ">Current Scale:</span>
         <span class="font-semibold">${ctx.round(page.scale)}</span>

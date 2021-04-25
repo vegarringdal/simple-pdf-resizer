@@ -2,7 +2,7 @@ import { html } from "lit-html";
 import { viewState } from "./viewState";
 
 export function detailListCheckbox() {
-  const [state, setViewState] = viewState();
+  const [state, setViewState] = viewState.getState();
   return html`<!-- template -->
     <label class="m-2 p-2 italic text-sm"
       >Show details:<input
@@ -17,7 +17,7 @@ export function detailListCheckbox() {
 }
 
 export function showA4Checkbox() {
-  const [state, setViewState] = viewState();
+  const [state, setViewState] = viewState.getState();
   return html`<!-- template -->
     <label class="m-2 p-2 italic text-sm"
       >Show A4:<input
@@ -33,7 +33,7 @@ export function showA4Checkbox() {
 }
 
 export function showA3Checkbox() {
-  const [state, setViewState] = viewState();
+  const [state, setViewState] = viewState.getState();
   return html`<!-- template -->
     <label class="m-2 p-2 italic text-sm"
       >Show A3:<input

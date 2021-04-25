@@ -2,6 +2,7 @@ import { app, BrowserWindow } from "electron";
 import * as path from "path";
 
 let win: BrowserWindow = null;
+declare const DEVELOPMENT: boolean;
 
 export function getWindow() {
   return win;
@@ -24,7 +25,7 @@ export async function createWindow() {
       nodeIntegrationInSubFrames: false,
       contextIsolation: true,
       enableRemoteModule: false,
-      preload: path.join(__dirname, "/../preload/main.js"),
+      preload: path.join(__dirname, "../preload/main.js"),
     },
   });
 
@@ -33,7 +34,7 @@ export async function createWindow() {
 
   // hide menus
   win.setMenuBarVisibility(false);
-  if (!process.env.production !== true) {
+  if (!DEVELOPMENT !== true) {
     win.webContents.openDevTools({ mode: "detach" });
   }
 

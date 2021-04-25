@@ -3,7 +3,7 @@ import { html } from "lit-html";
 import { viewState } from "./viewState";
 
 export function actionButtons(ctx: AppRoot) {
-  const [state] = viewState();
+  const [state] = viewState.getState();
   return html`<div class="flex">
     <button class="flex-1 p-2 m-2 bg-indigo-400" @click=${ctx.selectFileBtn}>
       Select PDF

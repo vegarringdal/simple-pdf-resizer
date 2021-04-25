@@ -5,12 +5,10 @@ import { editScale } from "./editScale";
 import { viewState } from "./viewState";
 
 export function detailList(ctx: AppRoot, page: PageData, index: number) {
-  const [state, setViewState] = viewState();
+  const [state, setViewState] = viewState.getState();
   return html`<!-- template -->
     <li class="flex flex-col ${index ? "mt-4" : ""}">
-      <h1 class="font-semibold b-1 border-b ">
-        Page ${page.page}:
-      </h1>
+      <h1 class="font-semibold b-1 border-b ">Page ${page.page}:</h1>
       <div class="flex flex-row">
         <div class="flex-1 italic ">Original width:</div>
         <div class="flex-1 font-semibold">${page.width}</div>
@@ -50,9 +48,7 @@ export function detailList(ctx: AppRoot, page: PageData, index: number) {
       </div>
       <div class="flex">
         <div class="flex-1 italic">Current Scale:</div>
-        <div class="flex-1 font-semibold">
-          ${ctx.round(page.scale)}
-        </div>
+        <div class="flex-1 font-semibold">${ctx.round(page.scale)}</div>
       </div>
     </li>`;
 }

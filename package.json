@@ -8,27 +8,16 @@
     "make": "npm run build && electron-forge make",
     "try": "electron ./dist/backend/main",
     "postinstall": "./node_modules/.bin/electron-rebuild.cmd install-app-deps",
-    "start": "node fuse",
-    "build": "node fuse dist",
+    "start": "ts-node dev_electron",
+    "build": "ts-node build_electron",
     "eslint": "npm run eslint:run:backend && npm run eslint:run:frontend && npm run eslint:run:preload",
     "eslint:run:backend": "./node_modules/.bin/eslint --fix ./src/backend/**/*.ts",
     "eslint:run:frontend": "./node_modules/.bin/eslint --fix ./src/frontend/**/*.ts",
-    "eslint:run:preload": "./node_modules/.bin/eslint --fix ./src/preload/**/*.ts"
+    "eslint:run:preload": "./node_modules/.bin/eslint --fix ./src/preload/**/*.ts",
+    "prepare": "husky install"
   },
   "author": "Vegar Ringdal <vegar.ringdal@gmail.com>",
   "license": "MIT",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "prettier --write",
-      "git add"
-    ]
-  },
   "config": {
     "forge": {
       "makers": [
@@ -62,41 +51,39 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^11.0.0",
-    "@commitlint/config-conventional": "^11.0.0",
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
     "@electron-forge/cli": "6.0.0-beta.54",
     "@electron-forge/maker-deb": "6.0.0-beta.54",
     "@electron-forge/maker-rpm": "6.0.0-beta.54",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
     "@electron-forge/maker-zip": "6.0.0-beta.54",
-    "@simple-html/core": "1.0.0-alpha.77",
-    "@simple-html/datasource": "1.0.0-alpha.77",
-    "@simple-html/grid": "1.0.0-alpha.77",
-    "@simple-html/router": "1.0.0-alpha.77",
-    "@types/compression": "^1.7.0",
-    "@types/node": "^14.14.10",
-    "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
-    "autoprefixer": "^10.0.4",
+    "@simple-html/core": "3.5.0",
+    "@simple-html/router": "3.5.0",
+    "@types/node": "^14.14.41",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "autoprefixer": "^10.2.5",
+    "compression": "^1.7.4",
     "custom-elements-hmr-polyfill": "^1.0.3",
-    "electron": "^11.1.0",
-    "electron-rebuild": "^2.3.4",
-    "eslint": "^7.15.0",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-prettier": "^3.2.0",
-    "fuse-box": "^4.0.0-next.447",
-    "fuse-box-typechecker": "^3.0.1",
-    "husky": "^4.3.4",
-    "lint-staged": "^10.5.3",
+    "electron": "^12.0.5",
+    "electron-rebuild": "^2.3.5",
+    "esbuild": "^0.11.14",
+    "esbuild-helpers": "0.0.3",
+    "eslint": "^7.25.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^6.0.0",
     "lit-html": "^1.3.0",
-    "minify-html-literals": "^1.3.2",
-    "postcss": "^8.1.14",
+    "minify-html-literals": "^1.3.5",
+    "postcss": "^8.2.12",
     "prettier": "^2.2.1",
-    "tailwindcss": "^2.0.1",
-    "typescript": "^4.1.2"
+    "tailwindcss": "^2.1.2",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
-    "pdf-lib": "^1.12.0"
+    "pdf-lib": "^1.16.0"
   }
 }
